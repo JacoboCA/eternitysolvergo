@@ -1,9 +1,29 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"sort"
 )
+
+func test() {
+	if false {
+		fmt.Println("Create puzzle")
+		puzzle := createNewPuzzle(5, 9, "assets/test5x5/")
+		printPuzzleState(puzzle)
+	}
+	if false {
+		fmt.Println("Read puzzle")
+		puzzle2 := loadPuzzleState("assets/test5x5/solution.txt", loadPuzzle("assets/test5x5/puzzle.txt"))
+		fmt.Println(puzzle2)
+		printPuzzleState(puzzle2)
+	}
+}
+
+func testCoordinator(c *Coordinator) {
+	id := c.newWorker(nil, 0, 0)
+	c.run(id)
+}
 
 // test functions
 func createNewPuzzle(size int, colours int, basepath string) *PuzzleState {
@@ -38,7 +58,7 @@ func createNewPuzzle(size int, colours int, basepath string) *PuzzleState {
 			piece := state.board[i][j]
 
 			piece.base.id = ids[i*size+j]
-			piece.rotation = byte(rand.Intn(PieceMaxRotations))
+			piece.rotation = int8((rand.Intn(PieceMaxRotations)))
 			piece.x = int8(i)
 			piece.y = int8(j)
 
@@ -47,7 +67,7 @@ func createNewPuzzle(size int, colours int, basepath string) *PuzzleState {
 			}
 
 			if i != size-1 {
-				piece.south = byte(rand.Intn(colours) + 1)
+				piece.south = int8(rand.Intn(colours) + 1)
 			}
 
 			if j != 0 {
@@ -55,7 +75,7 @@ func createNewPuzzle(size int, colours int, basepath string) *PuzzleState {
 			}
 
 			if j != size-1 {
-				piece.east = byte(rand.Intn(colours) + 1)
+				piece.east = int8(rand.Intn(colours) + 1)
 			}
 
 			piece.resetRaw()

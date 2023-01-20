@@ -16,19 +16,8 @@ func main() {
 	if true {
 		leader()
 	} else {
-		worker()
-	}
-
-	if false {
-		fmt.Println("Create puzzle")
-		puzzle := createNewPuzzle(4, 8, "assets/test4x4/")
-		printPuzzleState(puzzle)
-	}
-	if false {
-		fmt.Println("Read puzzle")
-		puzzle2 := loadPuzzleState("assets/test4x4/solution.txt", loadPuzzle("assets/test4x4/puzzle.txt"))
-		fmt.Println(puzzle2)
-		printPuzzleState(puzzle2)
+		coordinator := new(Coordinator)
+		testCoordinator(coordinator)
 	}
 }
 
@@ -47,7 +36,7 @@ func loadPuzzle(path string) *Puzzle {
 
 	for i := 0; fileReader.Scan(); i++ {
 		var id int
-		var north, east, south, west byte
+		var north, east, south, west int8
 
 		fmt.Sscanf(fileReader.Text(), "%d %d %d %d %d", &id, &north, &east, &south, &west)
 
@@ -122,7 +111,7 @@ func loadPuzzleState(path string, puzzle *Puzzle) *PuzzleState {
 
 	for i := 0; fileReader.Scan(); i++ {
 		var id int
-		var rotation uint8
+		var rotation int8
 		var x, y int8
 
 		fmt.Sscanf(fileReader.Text(), "%d %d %d %d", &id, &rotation, &x, &y)
